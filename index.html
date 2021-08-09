@@ -1,23 +1,30 @@
 <h1>Hello World 12345</h1>
 
 <form><br>
-Enter your First Name: <input type="text" id="firstname"/><br><br>
-Enter your Last Name: <input type="text" id="lastname"/><br><br>
-<input type="submit" value="Submit" onclick="formdata()"/><br>
+Message: <input type="text" id="message"/><br><br>
+<input type="submit" value="Submit" onclick="submit()"/><br>
 </form>
 
 
 <script>
-function formdata() 
+function submit() 
 {
-  var firstname= document.getElementById("firstname").value;
-  var lastname= document.getElementById("lastname").value;
+  var message = document.getElementById("message").value;
   
-  console.log(firstname + lastname);
-  
-  document.writeln("<h1>Confirmation Page</h1><br>");
-  document.writeln("Thank you for completing this form.<br><br>");
-  document.writeln("The first name you entered is " + firstname + "<br>");
-  document.writeln("The last name you entered is " + lastname);
+  var url = 'https://prod-28.australiasoutheast.logic.azure.com:443/workflows/50e9c48c803e44bf94a712ba3004f684/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=1t2o2P2WBpTNxBbmrwreSMM1BxHsF6l1aDjxD9fyga0'
+    
+  let data = {
+    message: message
+  }
+
+  fetch(url, {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {"Content-type": "application/json; charset=UTF-8"}
+  })
+  .then(response => response.json()) 
+  .then(json => console.log(json));
+  .catch(err => console.log(err));
 }
 </script>
+
